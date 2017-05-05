@@ -54,6 +54,7 @@ int main(int argc, char* argv[]) {
 
   std::cout << "Valid? -> " << std::boolalpha << valid << '\n';
 
+  // cleanup
   free(a);
   free(b);
   free(c);

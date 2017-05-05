@@ -9,6 +9,42 @@
 using DataType = float;
 using Ptr = DataType*;
 
+/*
+
+   Given a grid, all x will be
+   written to. Factors are
+   indicated by their power-of-2
+   representation:
+
+   A(i,j) =
+     B(i,j) / 4 +
+     (B(i+1,j) +
+      B(i-1,j) +
+      B(i,j+1) +
+      B(i,j-1)) / 8 +
+     (B(i+1,j+1) +
+      B(i-1,j-1) +
+      B(i-1,j+1) +
+      B(i+1,j-1)) / 16
+
+   +---+---+---+---+---+---+---+
+   |   |   |   |   |   |   |   |
+   +---+---+---+---+---+---+---+
+   |   | x | x | x | x | x |   |
+   +---+---+---+---+---+---+---+
+   |   | x |-4 |-3 |-4 | x |   |
+   +---+---+---+---+---+---+---+
+   |   | x |-3 |-2 |-3 | x |   |
+   +---+---+---+---+---+---+---+
+   |   | x |-4 |-3 |-4 | x |   |
+   +---+---+---+---+---+---+---+
+   |   | x | x | x | x | x |   |
+   +---+---+---+---+---+---+---+
+   |   |   |   |   |   |   |   |
+   +---+---+---+---+---+---+---+
+
+ */
+
 int main(int argc, char* argv[]) {
   if (argc < 3)
     return EXIT_FAILURE;
@@ -83,7 +119,7 @@ int main(int argc, char* argv[]) {
     }
   }
 
-#else
+#else // SIMD or Sequential
 
   for (int i = 1; i < N - 1; ++i) {
     for (int j = 1; j < N - 1; ++j) {
@@ -114,9 +150,10 @@ int main(int argc, char* argv[]) {
   double timeInMs = t.elapsed<std::milli>();
   std::cout << "Time:     " << timeInMs << "ms" << '\n';
 
-  double checksum = std::accumulate(b, b + N * N, 0.0f, std::plus<double>());
+  double checksum = std::accumulate(a, a + N * N, 0.0f, std::plus<double>());
   std::cout << "Checksum: " << checksum << '\n';
 
+  // cleanup
   free(a);
   free(b);
 

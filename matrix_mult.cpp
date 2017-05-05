@@ -34,17 +34,7 @@ int main(int argc, char* argv[]) {
   #define B(x,y) b[(x) * N + (y)]
   #define C(x,y) c[(x) * N + (y)]
 
-#if defined(USE_SIMD)
-
-  for (int i = 0; i < N; ++i)
-    for (int j = 0; j < N; ++j) {
-      DataType sum(0);
-      for (int k = 0; k < N; ++k)
-        sum += A(i,k) * B(k,i);
-      C(i,j) = sum;
-    }
-
-#elif defined(USE_OPENMP)
+#if defined(USE_OPENMP)
 
   #pragma omp parallel for
   for (int i = 0; i < N; ++i)
@@ -79,7 +69,7 @@ int main(int argc, char* argv[]) {
       C(i,j) = sum;
     }
 
-#else
+#else // SIMD OR Sequential
 
   for (int i = 0; i < N; ++i)
     for (int j = 0; j < N; ++j) {
@@ -102,6 +92,7 @@ int main(int argc, char* argv[]) {
   double checksum = std::accumulate(c, c + N * N, 0.0f, std::plus<double>());
   std::cout << "Checksum: " << checksum << '\n';
 
+  // cleanup
   free(a);
   free(b);
   free(c);
