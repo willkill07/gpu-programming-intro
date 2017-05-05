@@ -1,0 +1,3 @@
+CXX := g++
+CPPFLAGS := -I./common -std=c++11 -DUSE_OPENMP_SIMD
+CXXFLAGS := -O3 -fopenmp

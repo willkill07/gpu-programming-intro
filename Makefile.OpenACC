@@ -1,0 +1,3 @@
+CXX := pgc++
+CPPFLAGS := -I./common -std=c++11 -DUSE_OPENACC
+CXXFLAGS := -O3 -acc -ta=tesla:managed -Minfo=accel

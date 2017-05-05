@@ -1,0 +1,2 @@
+-I/opt/cuda/include
+-I./common
