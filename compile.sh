@@ -7,6 +7,4 @@ do
     tag=$(echo ${version} | cut -f2 -d.)
     make -f ${version} ${target}
     mv ${target} ${target}.${tag}
-    echo ${version}
-    PGI_ACC_NOTIFY=3 PGI_ACC_TIME=1 OMP_NUM_THREADS=6 ./${target}.${tag} ${@}
 done

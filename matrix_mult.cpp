@@ -2,6 +2,7 @@
 #include <functional>
 #include <numeric>
 #include <iostream>
+#include <mm_malloc.h>
 
 #include "random_utils.hpp"
 #include "timer.hpp"
@@ -15,9 +16,9 @@ int main(int argc, char* argv[]) {
   const int N = atoi(argv[1]);
 
   // prefer malloc as it is non-initializing
-  Ptr a = reinterpret_cast<Ptr>(malloc(sizeof(DataType) * N * N));
-  Ptr b = reinterpret_cast<Ptr>(malloc(sizeof(DataType) * N * N));
-  Ptr c = reinterpret_cast<Ptr>(malloc(sizeof(DataType) * N * N));
+  Ptr a = (Ptr)_mm_malloc(sizeof(DataType) * N * N, 64);
+  Ptr b = (Ptr)_mm_malloc(sizeof(DataType) * N * N, 64);
+  Ptr c = (Ptr)_mm_malloc(sizeof(DataType) * N * N, 64);
 
   // initialize
   {
@@ -93,9 +94,9 @@ int main(int argc, char* argv[]) {
   std::cout << "Checksum: " << checksum << '\n';
 
   // cleanup
-  free(a);
-  free(b);
-  free(c);
+  _mm_free(a);
+  _mm_free(b);
+  _mm_free(c);
 
   return EXIT_SUCCESS;
 }
