@@ -71,5 +71,5 @@ vector_add(const int N,
 #pragma acc kernels loop independent
 #endif
   for (int i = 0; i < N; ++i)
-    c[i] = a[i] + b[i];
+    c[i]     = a[i] + b[i];
 }
